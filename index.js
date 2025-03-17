@@ -35,6 +35,9 @@ btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', function
         else {
             display.innerHTML = "\n            <p class=\"text-center my-2 text-sm bg-red-100 border border-red-500 text-red-700 p-1 rounded\">".concat(input, " is not a palindrome</p>\n            ");
         }
+        setTimeout(function () {
+            display.innerHTML = "";
+        }, 3000);
         paliInput.value = "";
     }
 });
@@ -74,7 +77,10 @@ function renderTable(filter) {
     });
 }
 function deleteEntry(index) {
-    paliArray.splice(index, 1);
-    localStorage.setItem("userHistory", JSON.stringify(paliArray));
-    renderTable();
+    var confirmDelete = confirm("Are you sure you want to delete this entry?");
+    if (confirmDelete) {
+        paliArray.splice(index, 1);
+        localStorage.setItem("userHistory", JSON.stringify(paliArray));
+        renderTable();
+    }
 }

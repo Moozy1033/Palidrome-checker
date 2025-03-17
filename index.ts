@@ -51,6 +51,9 @@ btn?.addEventListener('click', ()=>{
             <p class="text-center my-2 text-sm bg-red-100 border border-red-500 text-red-700 p-1 rounded">${input} is not a palindrome</p>
             `
         }
+        setTimeout(() => {
+            display.innerHTML = ""
+        }, 3000);
         paliInput.value = ""
     } 
 })
@@ -100,7 +103,11 @@ function renderTable(filter: "all" | "palindrome" | "non-palindrome" = "all"){
     });
 }
 function deleteEntry(index: number) {
-    paliArray.splice(index, 1); 
+    const confirmDelete = confirm("Are you sure you want to delete this entry?");
+    if (confirmDelete) {
+        paliArray.splice(index, 1); 
     localStorage.setItem("userHistory", JSON.stringify(paliArray)); 
     renderTable(); 
+    }
+    
 }
