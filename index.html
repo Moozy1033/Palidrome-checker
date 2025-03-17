@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <div class="flex justify-center items-center min-h-screen bg-gray-100">
+            <div class="bg-transparent w-full max-w-lg border border-white/20 shadow rounded p-5">
+                <h3 class="text-center  text-xl font-bold mb-3">Palindrome Checker</h3>
+                <input autofocus id="pali" class="p-1 pl-3 mb-3 w-full bg-transparent border border-gray-400 rounded text-black focus:outline-none focus:border-blue-500" type="text">
+                <button id="check" class="p-1 py-1.5 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold  rounded transition">Check</button>
+                <div id="show" class="mx-auto font-bold"></div>
+                <div class="mt-4">
+                    <select class="w-full p-2 rounded text-sm border-none" name="" id="filter">
+                        <option value="all">Show All</option>
+                        <option value="palindrome">Palindrome</option>
+                        <option value="non-palindrome">Non-Palindrome</option>
+                    </select>
+                </div>
+                <div class="max-w-2xl mx-auto mt-6">
+                    <table class="w-full shadow rounded overflow-hidden">
+                        <thead class="text-sm">
+                            <tr>
+                                <th class="p-2">Result</th>
+                                <th class="p-2">Date</th>
+                                <th class="p-2">Time</th>
+                                <th class="p-2">Palindrome</th>
+                                <th class="p-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTable"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
