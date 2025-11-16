@@ -5,12 +5,21 @@ localStorage.removeItem("userHistory");
 var btn = document.getElementById('check');
 var filterSelect = document.getElementById("filter");
 var tableBody = document.getElementById("historyTable");
+// Modal elements
+var modal = document.getElementById("deleteModal");
+var cancelBtn = document.getElementById("cancelDelete");
+var confirmBtn = document.getElementById("confirmDelete");
+var deleteIndex = null;
 renderTable();
 btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', function () {
     var paliInput = document.getElementById('pali');
     var display = document.getElementById('show');
+    var show = document.getElementById("inputShow");
     if (!paliInput.value) {
-        alert('Fill in the input');
+        show.innerHTML = "<p class=\"text-red-500 ps-1 text-[12px]\">Fill in the empty input</p>";
+        setTimeout(function () {
+            show.innerHTML = "";
+        }, 2000);
     }
     else {
         var paliInfo = {
@@ -68,19 +77,35 @@ function renderTable(filter) {
         row.innerHTML = "\n        \n            <td class=\"py-2  text-center text-sm\">".concat(e.input, "</td>\n            <td class=\"py-2  text-center text-sm\">").concat(e.date, "</td>\n            <td class=\"py-2  text-center text-sm\">").concat(e.time, "</td>\n            <td class=\"text-center text-sm font-bold ").concat(e.isPalindrome ? "text-green-500" : "text-red-500", "\">\n            ").concat(e.isPalindrome ? "Palindrome" : "Not a Palindrome", "\n            </td>\n            <td class=\"py-2 px-3 text-center text-sm\">\n            <button class=\"delete-btn bg-red-500 hover:bg-red-700 text-white text-xs px-2 py-1 rounded\" data-index=\"").concat(index, "\"> Delete </button>\n            </td>\n        \n        ");
         tableBody.appendChild(row);
     });
+    // Attach modal delete logic
     document.querySelectorAll(".delete-btn").forEach(function (button) {
         button.addEventListener("click", function (event) {
             var target = event.target;
-            var indexToDelete = parseInt(target.dataset.index);
-            deleteEntry(indexToDelete);
+            deleteIndex = parseInt(target.dataset.index);
+            modal.classList.remove("hidden");
         });
     });
 }
-function deleteEntry(index) {
-    var confirmDelete = confirm("Are you sure you want to delete this entry?");
-    if (confirmDelete) {
-        paliArray.splice(index, 1);
+// function deleteEntry(index: number) {
+//     const confirmDelete = confirm("Are you sure you want to delete this entry?");
+//     if (confirmDelete) {
+//         paliArray.splice(index, 1); 
+//     localStorage.setItem("userHistory", JSON.stringify(paliArray)); 
+//     renderTable(); 
+//     }
+// }
+// Modal cancel
+cancelBtn.addEventListener("click", function () {
+    modal.classList.add("hidden");
+    deleteIndex = null;
+});
+// Modal confirm delete
+confirmBtn.addEventListener("click", function () {
+    if (deleteIndex !== null) {
+        paliArray.splice(deleteIndex, 1);
         localStorage.setItem("userHistory", JSON.stringify(paliArray));
         renderTable();
+        deleteIndex = null;
     }
-}
+    modal.classList.add("hidden");
+});

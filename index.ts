@@ -13,14 +13,23 @@ localStorage.removeItem("userHistory")
 const btn = document.getElementById('check') as HTMLButtonElement | null
 const filterSelect = document.getElementById("filter") as HTMLSelectElement | null
 const tableBody = document.getElementById("historyTable");
+// Modal elements
+const modal = document.getElementById("deleteModal")!;
+const cancelBtn = document.getElementById("cancelDelete")!;
+const confirmBtn = document.getElementById("confirmDelete")!;
 
+let deleteIndex: number | null = null;
 renderTable()
 btn?.addEventListener('click', ()=>{
     const paliInput = document.getElementById('pali') as HTMLInputElement
     const display = document.getElementById('show') as HTMLElement
+    const show = document.getElementById("inputShow") as HTMLElement
 
     if (!paliInput.value) {
-        alert('Fill in the input')
+        show.innerHTML = `<p class="text-red-500 ps-1 text-[12px]">Fill in the empty input</p>`
+        setTimeout(() => {
+            show.innerHTML = ""
+        }, 2000);
     } else{
         
         let paliInfo:Palindrome = {
@@ -94,20 +103,30 @@ function renderTable(filter: "all" | "palindrome" | "non-palindrome" = "all"){
         `
         tableBody.appendChild(row)
     })
+    // Attach modal delete logic
     document.querySelectorAll(".delete-btn").forEach((button) => {
         button.addEventListener("click", (event) => {
             const target = event.target as HTMLButtonElement;
-            const indexToDelete = parseInt(target.dataset.index!);
-            deleteEntry(indexToDelete);
+            deleteIndex = parseInt(target.dataset.index!);
+            modal.classList.remove("hidden");
         });
     });
 }
-function deleteEntry(index: number) {
-    const confirmDelete = confirm("Are you sure you want to delete this entry?");
-    if (confirmDelete) {
-        paliArray.splice(index, 1); 
-    localStorage.setItem("userHistory", JSON.stringify(paliArray)); 
-    renderTable(); 
+
+
+// Modal cancel
+cancelBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    deleteIndex = null;
+});
+
+// Modal confirm delete
+confirmBtn.addEventListener("click", () => {
+    if (deleteIndex !== null) {
+        paliArray.splice(deleteIndex, 1);
+        localStorage.setItem("userHistory", JSON.stringify(paliArray));
+        renderTable();
+        deleteIndex = null;
     }
-    
-}
+    modal.classList.add("hidden");
+});
